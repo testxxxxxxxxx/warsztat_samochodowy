@@ -12,8 +12,11 @@ class Router {
     }
     public static function accept(string $path, string $method): void {
         foreach(Router::$routes as $key => $val) {
-            if($path == $key && $val[0] == $method)
+            if($path == $key && $val[0] == $method) {
                 $val[1]();
+                return;
+            }
         }
+        header("HTTP/1.1 404 Not Found");
     }
 }
