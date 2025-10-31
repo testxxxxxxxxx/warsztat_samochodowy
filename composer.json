@@ -1,0 +1,10 @@
+{
+    "name": "user/warsztat_samochodowy",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "User\\WarsztatSamochodowy\\": "src/"
+        }
+    },
+    "require": {}
+}
