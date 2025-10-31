@@ -5,18 +5,17 @@ declare(strict_types = 1);
 namespace App\Routing;
 
 class Router {
-    private array $routes = [];
+    private static array $routes = [];
 
-    public static function add(string $path, string $method, $function): void {
-        Router::$routes[$path] = [$method, $function];
+    public static function add(string $path, string $method, callable $function): void {
+        self::$routes[$path] = [$method, $function];
     }
     public static function accept(string $path, string $method): void {
-        foreach(Router::$routes as $key => $val) {
-            if($path == $key && $val[0] == $method) {
-                $val[1]();
-                return;
-            }
+        if(isset(self::$routes[$path]) && self::$routes[$path][0] == $method) {
+            self::$routes[$path][1]();
+            return;
         }
         header("HTTP/1.1 404 Not Found");
+        echo "404 - Route not found!";
     }
 }
