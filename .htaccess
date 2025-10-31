@@ -1,0 +1,12 @@
+# Włącz mod_rewrite
+RewriteEngine On
+
+# Ustaw katalog bazowy (zazwyczaj "/")
+RewriteBase /
+
+# Jeśli żądany plik lub katalog istnieje — nie przekierowuj
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Wszystkie inne żądania przekieruj do index.php
+RewriteRule ^ index.php [QSA,L]
