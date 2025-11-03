@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Services;
 
-class ClientService {
+use \PDO;
 
+class ClientService {
+     
 }
