@@ -9,16 +9,34 @@ use \PDO;
 use \PDOException;
 
 class Client {
-    public function getName(int $id): array | string{
+    public function get(int $id): array {
         try {
             $db = Database::connect();
-            $sql = "SELECT NAZWA FROM KONTRACHENT WHERE ID_KONTR = :id";
+            $sql = "SELECT * FROM KONTRACHENT WHERE ID_KONTR = :id";
             $stmt = $db->prepare($sql);
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch(PDOException $err) {
-            return $err->getMessage();
+            return [$err->getMessage()];
+        }
+    }
+    public function create(string $name, string $phoneNumber, string $city, string $street, int $buildingNumber, string $nip, string $email): bool {
+        try {
+            $db = Database::connect();
+            $sql = "INSERT INTO KONTRACHENT(nazwa, telefon, miejscowosc, ulica, numer_budynku, nip, emial) VALUES(:name, :phoneNumber, :city, :street, :buildingNumber, :nip, :email)";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(":name", $name, PDO::PARAM_STR);
+            $stmt->bindParam(":phoneNumber", $phoneNumber, PDO::PARAM_STR);
+            $stmt->bindParam(":city", $city, PDO::PARAM_STR);
+            $stmt->bindParam(":street", $street, PDO::PARAM_STR);
+            $stmt->bindParam(":buildingNumber", $buildingNumber, PDO::PARAM_INT);
+            $stmt->bindParam(":nip", $nip, PDO::PARAM_STR);
+            $stmt->bindParam(":email", $email, PDO::PARAM_STR);
+            $stmt->execute();
+            return true;
+        } catch(PDOException $err) {
+            return false;
         }
     }
 }
