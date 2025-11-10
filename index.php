@@ -10,9 +10,6 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-require_once __DIR__."/Routing/Router.php";
-require_once __DIR__."/Controllers/MainController.php";
-
 use App\Routing\Router;
 use App\Controllers\MainController;
 
