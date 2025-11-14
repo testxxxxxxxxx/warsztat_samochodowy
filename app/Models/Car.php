@@ -16,15 +16,27 @@ class Car {
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
             $stmt->execute();
 
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch(PDOException $err) {
+            return [$err->getMessage()];
+        }
+    }
+    public function getClient(): array {
+        try {
+            $db = Database::connect();
+            $sql = "SELECT * FROM POJAZD p INNER JOIN KONTRACHENT k on p.id_kontr = k.id_kontr";
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch(PDOException $err) {
             return [$err->getMessage()];
         }
     }
-    public function create(string $registrationNumber, string $mark, string $model, float $engine, float $horsePower, float $power, string $type, int $year, int $mileage): bool {
+    public function create(string $registrationNumber, string $mark, string $model, float $engine, float $horsePower, float $power, string $type, int $year, int $mileage, int $clientId): bool {
         try {
             $db = Database::connect();
-            $sql = "INSERT INTO POJAZD(nr_rej, marka, model, silnik, konie_mech, moc, typ, rok_prod, przebieg) VALUES(:registrationNumber, :mark, :model, :engine, :horsePower, :power, :type, :year, :mileage)";
+            $sql = "INSERT INTO POJAZD(nr_rej, marka, model, silnik, konie_mech, moc, typ, rok_prod, przebieg, id_kontr) VALUES(:registrationNumber, :mark, :model, :engine, :horsePower, :power, :type, :year, :mileage, :clientId)";
             $stmt = $db->prepare($sql);
             $stmt->bindParam(":registrationNumber", $registrationNumber, PDO::PARAM_STR);
             $stmt->bindParam(":mark", $mark, PDO::PARAM_STR);
@@ -35,16 +47,17 @@ class Car {
             $stmt->bindParam(":type", $type, PDO::PARAM_STR);
             $stmt->bindParam(":year", $year, PDO::PARAM_INT);
             $stmt->bindParam(":mileage", $mileage, PDO::PARAM_INT);
+            $stmt->bindParam(":clientId", $clientId, PDO::FETCH_ASSOC);
             $stmt->execute();
             return true;
         } catch(PDOException $err) {
             return false;
         }
     }
-    public function update(int $id, string $registrationNumber, string $mark, string $model, float $engine, float $horsePower, float $power, string $type, int $year, int $mileage) {
+    public function update(int $id, string $registrationNumber, string $mark, string $model, float $engine, float $horsePower, float $power, string $type, int $year, int $mileage, int $clientId): bool {
         try {
             $db = Database::connect();
-            $sql = "UPDATE POJAZD SET nr_rej = :registrationNumber, marka = :mark, silnik = :engine, konie_mech = :horsePower, moc = :power, typ = :type, rok = :year, przebieg = :mileage WHERE id_poj = :id";
+            $sql = "UPDATE POJAZD SET nr_rej = :registrationNumber, marka = :mark, silnik = :engine, konie_mech = :horsePower, moc = :power, typ = :type, rok = :year, przebieg = :mileage, id_kontr = :clientId WHERE id_poj = :id";
             $stmt = $db->prepare($sql);
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
             $stmt->bindParam(":registrationNumber", $registrationNumber, PDO::PARAM_STR);
@@ -56,6 +69,7 @@ class Car {
             $stmt->bindParam(":type", $type, PDO::PARAM_STR);
             $stmt->bindParam(":year", $year, PDO::PARAM_INT);
             $stmt->bindParam(":mileage", $mileage, PDO::PARAM_INT);
+            $stmt->bindParam(":clientId", $clientId, PDO::PARAM_INT);
             $stmt->execute();
             return true;
         } catch(PDOException $err) {
