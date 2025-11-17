@@ -7,11 +7,11 @@ use App\Database\Database;
 use \PDO;
 use \PDOException;
 
-class Document {
+class Thing {
     public function get(int $id): array {
         try {
             $db = Database::connect();
-            $sql = "SELECT * FROM DOKUMENT d INNER JOIN ZLECENIE z ON d.id_zlec = z.id_zlec and id_dok = :id";
+            $sql = "SELECT * FROM RZECZY_DO_PRZECHOWALNI WHERE id_rzeczy = :id";
             $stmt = $db->prepare($sql);
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
             $stmt->execute();
@@ -21,10 +21,10 @@ class Document {
             return [$err->getMessage()];
         }
     }
-    public function getJobs(): array {
+    public function getAll(): array {
         try {
             $db = Database::connect();
-            $sql = "SELECT * FROM DOKUMENT d INNER JOIN ZLECENIE z ON d.id_zlec = z.id_zlec";
+            $sql = "SELECT * FROM RZECZY_DO_PRZECHOWALNI";
             $stmt = $db->prepare($sql);
             $stmt->execute();
 
@@ -33,14 +33,12 @@ class Document {
             return [$err->getMessage()];
         }
     }
-    public function create(string $startDate, string $type, int $jobId): bool {
+    public function create(string $name): bool {
         try {
             $db = Database::connect();
-            $sql = "INSERT INTO DOKUMENT(data_utworzenia, typ, id_zlec) VALUES(:startDate, :type, :jobId)";
+            $sql = "INSERT INTO RZECZY_DO_PRZECHOWALNI(nazwa) VALUES(:name)";
             $stmt = $db->prepare($sql);
-            $stmt->bindParam(":startDate", $startDate, PDO::PARAM_STR);
-            $stmt->bindParam(":type", $type, PDO::PARAM_STR);
-            $stmt->bindParam(":jobId", $jobId);
+            $stmt->bindParam(":name", $name, PDO::PARAM_STR);
             $stmt->execute();
 
             return true;
@@ -48,15 +46,13 @@ class Document {
             return false;
         }
     }
-    public function update(int $id, string $startDate, string $type, int $jobId): bool {
+    public function update(int $id, string $name): bool {
         try {
             $db = Database::connect();
-            $sql = "UPDATE DOKUMENT SET data_utworzenia = :startDate, typ = :type, id_zlec = :jobId WHERE id_dok = :id";
+            $sql = "UPDATE RZECZY_DO_PRZECHOWALNI SET nazwa = :name WHERE id_rzeczy = :id";
             $stmt = $db->prepare($sql);
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
-            $stmt->bindParam(":startDate", $startDate, PDO::PARAM_STR);
-            $stmt->bindParam(":type", $type, PDO::PARAM_STR);
-            $stmt->bindParam(":jobId", $jobId);
+            $stmt->bindParam(":name", $name, PDO::PARAM_STR);
             $stmt->execute();
 
             return true;
@@ -67,7 +63,7 @@ class Document {
     public function delete(int $id): bool {
         try {
             $db = Database::connect();
-            $sql = "DELETE FROM DOKUMENT WHERE id_dok = :id";
+            $sql = "DELETE FROM RZECZY_DO_PRZECHOWALNI WHERE id_rzeczy = :id";
             $stmt = $db->prepare($sql);
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
             $stmt->execute();
@@ -76,5 +72,5 @@ class Document {
         } catch(PDOException $err) {
             return false;
         }
-    }
+    }    
 }

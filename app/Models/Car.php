@@ -11,7 +11,7 @@ class Car {
     public function get(int $id): array {
         try {
             $db = Database::connect();
-            $sql = "SELECT * FROM POJAZD WHERE id_poj = :id";
+            $sql = "SELECT * FROM POJAZD p INNER JOIN KONTRACHENT k ON p.id_kontr = k.id_kontr AND p.id_poj = :id";
             $stmt = $db->prepare($sql);
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
             $stmt->execute();
@@ -21,7 +21,7 @@ class Car {
             return [$err->getMessage()];
         }
     }
-    public function getClient(): array {
+    public function getAll(): array {
         try {
             $db = Database::connect();
             $sql = "SELECT * FROM POJAZD p INNER JOIN KONTRACHENT k on p.id_kontr = k.id_kontr";
