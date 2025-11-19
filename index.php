@@ -10,9 +10,6 @@ $dotenv->load();
 use App\Routing\Router;
 use App\Controllers\MainController;
 
-$dotenv = Dotenv::createImmutable(__DIR__);
-$dotenv->load();
-
 //start router
 Router::accept($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
 
