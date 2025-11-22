@@ -9,29 +9,42 @@ use \PDOException;
 
 class Workstation {
     //TODO: add joins for sql
-    public function get(string $name): array {
+    public function getRepair(string $name): array {
         try {
             $db = Database::connect();
-            $sql = "SELECT * FROM STANOWISKO s WHERE nazwa = :name";
+            $sql = "SELECT * FROM STANOWISKO s INNER JOIN STANOWISKO_NAPRAWCZE sn ON s.stanowisko_naprawcze = sn.number and nazwa = :name";
             $stmt = $db->prepare($sql);
             $stmt->bindParam(":name", $name, PDO::PARAM_STR);
             $stmt->execute();
 
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch(PDOException $err) {
-            return [$stmt->getMessage()];
+            return [$err->getMessage()];
+        }
+    }
+    public function getInspect(string $name): array {
+        try {
+            $db = Database::connect();
+            $sql = "SELECT * FROM STANOWISKO s INNER JOIN STANOWISKO_INSPEKCYJNE si ON s.stanowisko_inspekcyjne = si.number and nazwa = :name";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(":name", $name, PDO::PARAM_STR);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch(PDOException $err) {
+            return [$err->getMessage()];
         }
     }
     public function getAll(): array {
         try {
             $db = Database::connect();
-            $sql = "SELECT * FROM STANOWISKO s";
+            $sql = "SELECT * FROM STANOWISKO s, STANOWISKO_NAPRAWCZE sn, STANOWISKO_INSPEKCYJNE si WHERE s.stanowisko_naprawcze = sn.number or s.stanowisko_inspekcyjne = si.number";
             $stmt = $db->prepare($sql);
             $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch(PDOException $err) {
-            return [$stmt->getMessage()];
+            return [$err->getMessage()];
         }
     }
     public function create(string $name, string $description, int $repairId, int $insId): bool {
