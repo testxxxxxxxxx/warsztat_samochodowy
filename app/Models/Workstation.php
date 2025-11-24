@@ -8,7 +8,6 @@ use \PDO;
 use \PDOException;
 
 class Workstation {
-    //TODO: add joins for sql
     public function getRepair(string $name): array {
         try {
             $db = Database::connect();
