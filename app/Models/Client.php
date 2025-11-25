@@ -21,10 +21,21 @@ class Client {
             return [$err->getMessage()];
         }
     }
-    public function create(string $name, string $phoneNumber, string $city, string $street, int $buildingNumber, string $nip, string $email, int $commodityId): bool {
+    public function getAll(): array {
+       try {
+            $db = Database::connect();
+            $sql = "SELECT * FROM KONTRACHENT";
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch(PDOException $err) {
+            return [$err->getMessage()];
+        }
+    }
+    public function create(string $name, string $phoneNumber, string $city, string $street, int $buildingNumber, string $nip, string $email): bool {
         try {
             $db = Database::connect();
-            $sql = "INSERT INTO KONTRACHENT(nazwa, telefon, miejscowosc, ulica, numer_budynku, nip, email, id_towaru) VALUES(:name, :phoneNumber, :city, :street, :buildingNumber, :nip, :email, :commodityId)";
+            $sql = "INSERT INTO KONTRACHENT(nazwa, telefon, miejscowosc, ulica, numer_budynku, nip, email, id_towaru) VALUES(:name, :phoneNumber, :city, :street, :buildingNumber, :nip, :email)";
             $stmt = $db->prepare($sql);
             $stmt->bindParam(":name", $name, PDO::PARAM_STR);
             $stmt->bindParam(":phoneNumber", $phoneNumber, PDO::PARAM_STR);
@@ -33,17 +44,16 @@ class Client {
             $stmt->bindParam(":buildingNumber", $buildingNumber, PDO::PARAM_INT);
             $stmt->bindParam(":nip", $nip, PDO::PARAM_STR);
             $stmt->bindParam(":email", $email, PDO::PARAM_STR);
-            $stmt->bindParam(":commodityId", $commodityId, PDO::PARAM_INT);
             $stmt->execute();
             return true;
         } catch(PDOException $err) {
             return false;
         }
     }
-    public function update(int $id, string $phoneNumber, string $city, string $street, int $buildingNumber, string $nip, string $email, int $commodityId): bool {
+    public function update(int $id, string $phoneNumber, string $city, string $street, int $buildingNumber, string $nip, string $email): bool {
         try {
             $db = Database::connect();
-            $sql = "UPDATE KONTRACHENT SET nazwa=:name, telefon=:phoneNumber, miejscowosc=:city, ulica=:street, numer_budynku=:buildingNumber, nip=:nip, email=:email, id_towaru = :commodityId WHERE id=:id";
+            $sql = "UPDATE KONTRACHENT SET nazwa=:name, telefon=:phoneNumber, miejscowosc=:city, ulica=:street, numer_budynku=:buildingNumber, nip=:nip, email=:email WHERE id=:id";
             $stmt = $db->prepare($sql);
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
             $stmt->bindParam(":name", $name, PDO::PARAM_STR);
@@ -53,7 +63,6 @@ class Client {
             $stmt->bindParam(":buildingNumber", $buildingNumber, PDO::PARAM_INT);
             $stmt->bindParam(":nip", $nip, PDO::PARAM_STR);
             $stmt->bindParam(":email", $email, PDO::PARAM_STR);
-            $stmt->bindParam(":commodityId", $commodityId, PDO::PARAM_INT);
             $stmt->execute();
             return true; 
         } catch(PDOException $err) {
