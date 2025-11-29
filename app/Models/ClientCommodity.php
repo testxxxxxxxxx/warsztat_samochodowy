@@ -21,25 +21,12 @@ class ClientCommodity {
         } catch(PDOException $err) {
             return false;
         }
-    }
-    public function update(int $clientId, string $code): bool {
-        try {
-            $db = Database::connect();
-            $sql = "UPDATE KONTRACHENT_TOWAR SET id_kontr = :clientId, kod_magazyn = :code WHERE id_kontr = :clientId or kod_magazyn = :code";
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam(":clientId", $clientId, PDO::PARAM_INT);
-            $stmt->bindParam(":code", $code, PDO::PARAM_STR);
-            $stmt->execute();
-
-            return true;
-        } catch(PDOException $err) {
-            return false;
-        }
-    }
+    } 
     public function delete(int $clientId, string $code): bool {
         try {
             $db = Database::connect();
-            $sql = "DELETE FROM KONTRACHENT_TOWAR WHERE id_kontr = :clientId or kod_magazyn = :code";
+            $sql = "DELETE FROM KONTRACHENT_TOWAR WHERE id_kontr = :clientId and kod_magazyn = :code";
+            $stmt = $db->prepare($sql);
             $stmt->bindParam(":clientId", $clientId, PDO::PARAM_INT);
             $stmt->bindParam(":code", $code, PDO::PARAM_STR);
             $stmt->execute();
