@@ -10,9 +10,9 @@ $dotenv->load();
 use App\Routing\Router;
 use App\Controllers\MainController;
 
-//start router
-Router::accept($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
-
 //new pages define
 //for example
 //Router::add('/', "GET", MainController::index);
+
+//start router
+Router::accept($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
