@@ -8,11 +8,11 @@ $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 use App\Routing\Router;
-use App\Controllers\MainController;
+use App\Controllers\ClientController;
 
 //new pages define
 //for example
-//Router::add('/', "GET", MainController::index);
+//Router::add('/', "GET", ClientController::index);
 
 //start router
-Router::accept($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
+Router::accept(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), $_SERVER['REQUEST_METHOD']);
