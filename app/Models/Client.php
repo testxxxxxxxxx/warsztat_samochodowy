@@ -50,7 +50,7 @@ class Client {
             return false;
         }
     }
-    public function update(int $id, string $phoneNumber, string $city, string $street, int $buildingNumber, string $nip, string $email): bool {
+    public function update(int $id, string $name, string $phoneNumber, string $city, string $street, int $buildingNumber, string $nip, string $email): bool {
         try {
             $db = Database::connect();
             $sql = "UPDATE KONTRACHENT SET nazwa=:name, telefon=:phoneNumber, miejscowosc=:city, ulica=:street, numer_budynku=:buildingNumber, nip=:nip, email=:email WHERE id=:id";
