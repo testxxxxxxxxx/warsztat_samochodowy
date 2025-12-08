@@ -30,7 +30,7 @@ class ClientController {
         $clientNIP = $_POST["nip"];
         $clientEmail = $_POST["email"];
         $res = $client->create($clientName, $clientPhoneNumber, $clientCity, $clientStreet, $clientBuildingName, $clientNIP, $clientEmail);
-        return new TemplateEngine("clients_view.php", ["status" => $res]);
+        return new TemplateEngine("clients_description_view.php", ["status" => $res]);
     }
     public static function update(): TemplateEngine {
         $client = new Client();

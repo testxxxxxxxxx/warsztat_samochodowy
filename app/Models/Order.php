@@ -8,6 +8,18 @@ use \PDO;
 use \PDOException;
 
 class Order {
+    public function getAll(): array {
+        try {
+            $db = Database::connect();
+            $sql = "SELECT * FROM ZLECENIA";
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $err) {
+            return [$err->getMessage()];
+        }
+    }
     public function getCar(int $id): array {
         try {
             $db = Database::connect();
