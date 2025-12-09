@@ -21,6 +21,18 @@ class Lift {
             return [$err->getMessage()];
         }
     }
+    public function getAll(): array {
+        try {
+            $db = Database::connect();
+            $sql = "SELECT * FROM 'podnośnik'";
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $err) {
+            return [$err->getMessage()];
+        }
+    }
     public function create(float $maxLift): bool {
         try {
             $db = Database::connect();
