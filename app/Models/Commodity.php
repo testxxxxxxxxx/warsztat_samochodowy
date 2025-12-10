@@ -8,7 +8,19 @@ use \PDO;
 use \PDOException;
 
 class Commodity {
-    public function get(string $code): array {
+    public function getAll(): array {
+        try {
+            $db = Database::connect();
+            $sql = "SELECT * FROM TOWAR t";
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $err) {
+            return [$err->getMessage()];
+        }
+    }
+    public function getClients(string $code): array {
         try {
             $db = Database::connect();
             $sql = "SELECT * FROM TOWAR t INNER JOIN KONTRACHENT_TOWAR kt ON t.KOD_MAGAZYM = kt.KOD_MAGAZYM INNER JOIN KONTRACHENT k ON kt.id_kontr = k.id_kontr WHERE t.KOD_MAGAZYM = :code";
@@ -21,10 +33,35 @@ class Commodity {
             return [$err->getMessage()];
         }
     }
-    public function getAll(): array {
+    public function getClientsAll(): array {
         try {
             $db = Database::connect();
             $sql = "SELECT * FROM TOWAR t INNER JOIN KONTRACHENT_TOWAR kt ON t.KOD_MAGAZYM = kt.KOD_MAGAZYM INNER JOIN KONTRACHENT k ON kt.id_kontr = k.id_kontr";
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $err) {
+            return [$err->getMessage()];
+        }
+    }
+    public function getOrders(string $code): array {
+        try {
+            $db = Database::connect();
+            $sql = "SELECT * FROM TOWAR t INNER JOIN TOWAR_ZLECENIA tz ON t.KOD_MAGAZYM = tz.KOD_MAGAZYM INNER JOIN ZLECENIA z ON tz.id_zlec = z.id_zlec WHERE t.KOD_MAGAZYM = :code";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(":code", $code, PDO::PARAM_STR);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch(PDOException $err) {
+            return [$err->getMessage()];
+        }
+    }
+    public function getOrdersAll(): array {
+        try {
+            $db = Database::connect();
+            $sql = "SELECT * FROM TOWAR t INNER JOIN TOWAR_ZLECENIA tz ON t.KOD_MAGAZYM = tz.KOD_MAGAZYM INNER JOIN ZLECENIA z ON tz.id_zlec = z.id_zlec";
             $stmt = $db->prepare($sql);
             $stmt->execute();
 
