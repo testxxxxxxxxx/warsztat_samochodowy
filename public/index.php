@@ -12,6 +12,8 @@ use App\Controllers\ClientController;
 use App\Controllers\CarController;
 use App\Controllers\DocumentController;
 use App\Controllers\LiftController;
+use App\Controllers\CommodityClientController;
+use App\Controllers\CommodityOrderController;
 
 //new pages define
 //for example
