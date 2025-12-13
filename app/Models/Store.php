@@ -66,12 +66,12 @@ class Store {
             return false;
         }
     }
-    public function delete(int $id) {
+    public function delete(int $id): bool {
         try {
             $db = Database::connect();
             $sql = "DELETE FROM PRZECHOWALNIA WHERE id_przech = :id";
             $stmt = $db->prepare($sql);
-            $stmt->bindParam(":id", $sql, PDO::PARAM_INT);
+            $stmt->bindParam(":id", $id, PDO::PARAM_INT);
             $stmt->execute();
 
             return true;

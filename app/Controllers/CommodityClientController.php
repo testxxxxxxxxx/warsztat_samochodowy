@@ -9,7 +9,7 @@ use App\Models\ClientCommodity;
 use App\Models\Client;
 
 class CommodityClientController {
-    public function index(): TemplateEngine {
+    public static function index(): TemplateEngine {
         $commodity = new Commodity();
         $client = new Client();
         $commoditesAndClients = $commodity->getClientsAll();
@@ -17,14 +17,14 @@ class CommodityClientController {
 
         return new TemplateEngine("commodity_view.php", ["commoditesAndClients" => $commoditesAndClients, "clients" => $client]);
     }
-    public function show(): TemplateEngine {
+    public static function show(): TemplateEngine {
         $code = $_GET["code"];
         $commodity = new Commodity();
         $commoditesAndClients = $commodity->getClients($code);
         
         return new TemplateEngine("commodity_desc_view.php", ["commoditesAndClients" => $commoditesAndClients]);
     }
-    public function create(): TemplateEngine {
+    public static function create(): TemplateEngine {
         $code = $_POST["code"];
         $name = $_POST["name"];
         $ean = $_POST["ean"];
@@ -39,7 +39,7 @@ class CommodityClientController {
         
         return new TemplateEngine("commodity_view.php", ["status" => $createStatus]);
     }
-    public function update(): TemplateEngine {
+    public static function update(): TemplateEngine {
         $code = $_POST["code"];
         $name = $_POST["name"];
         $ean = $_POST["ean"];
@@ -55,7 +55,7 @@ class CommodityClientController {
         
         return new TemplateEngine("commodity_view.php", ["status" => $updateStatus]);
     }
-    public function delete(): TemplateEngine {
+    public static function delete(): TemplateEngine {
         $code = $_POST["code"];
         $commodity = new Commodity();
         $clientCommodity = new ClientCommodity();

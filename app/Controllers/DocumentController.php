@@ -17,6 +17,7 @@ class DocumentController {
     }
     public static function show(): TemplateEngine {
         $id = $_GET["id"];
+        $document = new Document();
         $documentAndJob = $document->get($id);
         return new TemplateEngine("document_description_view.php", ["documentAndJob" => $documentAndJob]);
     }

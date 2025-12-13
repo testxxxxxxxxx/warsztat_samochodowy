@@ -22,13 +22,27 @@ class CommodityOrder {
             return false;
         }
     } 
-    public function delete(string $shopCode, int $orderId): bool {
+    public function deleteOne(string $shopCode, int $orderId): bool {
         try {
             $db = Database::connect();
             $sql = "DELETE FROM TOWAR_ZLECENIA WHERE kod_magazyn = :shopCode and id_zlec = :orderId";
             $stmt = $db->prepare($sql);
             $stmt->bindParam(":shopCode", $shopCode, PDO::PARAM_STR);
             $stmt->bindParam(":orderId", $orderId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return true;
+
+        } catch(PDOException $err) {
+            return false;
+        }
+    }
+    public function deleteMany(string $shopCode): bool {
+        try {
+            $db = Database::connect();
+            $sql = "DELETE FROM TOWAR_ZLECENIA WHERE id_zlec = :orderId";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(":shopCode", $shopCode, PDO::PARAM_STR);
             $stmt->execute();
 
             return true;
