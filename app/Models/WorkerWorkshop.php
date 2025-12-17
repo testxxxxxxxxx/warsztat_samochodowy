@@ -45,6 +45,18 @@ class WorkerWorkshop {
             return [$err->getMessage()];
         }
     }
+    public function getWorkshops(): array {
+        try {
+            $db = Database::connect();
+            $sql = "SELECT * FROM PRACOWNIK_WARSZTAT p INNER JOIN STANOWISKO_BUIRO s ON p.nr_pokoju = s.numer INNER JOIN STANOWISKO st ON s.numer = st.stanowisko_naprawcze";
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $err) {
+            return [$err->getMessage()];
+        }
+    }
     public function create(string $name, string $lastname, string $empDate, float $salary, int $hallNumber, float $bonus = null, int $bossId = null): bool {
         try {
             $db = Database::connect();
