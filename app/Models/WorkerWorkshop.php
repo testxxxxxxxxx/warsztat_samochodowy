@@ -36,7 +36,7 @@ class WorkerWorkshop {
     public function getBosses(): array {
         try {
             $db = Database::connect();
-            $sql = "SELECT p.nazwisko, p.imie, COUNT(*) AS ile_podwladnych FROM PRACOWNIK_WARSZTAT p INNER JOIN PRACOWNIK_BIURO s ON p.id_prac = s.szef GROUP BY s.szef ASC";
+            $sql = "SELECT p.nazwisko, p.imie, COUNT(*) AS ile_podwladnych FROM PRACOWNIK_WARSZTAT p INNER JOIN PRACOWNIK_WARSZTAT s ON p.id_prac = s.szef GROUP BY s.szef ASC";
             $stmt = $db->prepare($sql);
             $stmt->execute();
 
@@ -48,7 +48,19 @@ class WorkerWorkshop {
     public function getWorkshops(): array {
         try {
             $db = Database::connect();
-            $sql = "SELECT * FROM PRACOWNIK_WARSZTAT p INNER JOIN STANOWISKO_BUIRO s ON p.nr_pokoju = s.numer INNER JOIN STANOWISKO st ON s.numer = st.stanowisko_naprawcze";
+            $sql = "SELECT * FROM PRACOWNIK_WARSZTAT p INNER JOIN STANOWISKO_NAPRAWCZE s ON p.nr_hali = s.numer INNER JOIN STANOWISKO st ON s.numer = st.stanowisko_naprawcze";
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $err) {
+            return [$err->getMessage()];
+        }
+    }
+    public function getInspections(): array {
+        try {
+            $db = Database::connect();
+            $sql = "SELECT * FROM PRACOWNIK_WARSZTAT p INNER JOIN STANOWISKO_INSPEKCYJNE s ON p.nr_hali = s.numer INNER JOIN STANOWISKO st ON s.numer = st.stanowisko_inspekcyjne";
             $stmt = $db->prepare($sql);
             $stmt->execute();
 

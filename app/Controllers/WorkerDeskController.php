@@ -11,9 +11,10 @@ class WorkerDeskController {
         $workerDesk = new WorkerDesk();
         $workers = $workerDesk->getAll();
         $workshops = $workerDesk->getWorkshops();
+        $inspections = $workerDesk->getInspections();
         $bosses = $workerDesk->getBosses();
 
-        return new TemplateEngine("worker_desk_view.php", ["workers" => $workers, "workshops" => $workshops, "bosses" => $bosses]);
+        return new TemplateEngine("worker_desk_view.php", ["workers" => $workers, "workshops" => $workshops, "inspections" => $inspections, "bosses" => $bosses]);
     }
     public static function show(): TemplateEngine {
         $id = $_GET["id"];

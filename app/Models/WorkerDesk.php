@@ -48,7 +48,19 @@ class WorkerDesk {
     public function getWorkshops(): array {
         try {
             $db = Database::connect();
-            $sql = "SELECT * FROM PRACOWNIK_BUIRO p INNER JOIN STANOWISKO_BUIRO s ON p.nr_pokoju = s.numer INNER JOIN STANOWISKO st ON s.numer = st.stanowisko_naprawcze";
+            $sql = "SELECT * FROM PRACOWNIK_BUIRO p INNER JOIN STANOWISKO_NAPRAWCZE s ON p.nr_pokoju = s.numer INNER JOIN STANOWISKO st ON s.numer = st.stanowisko_naprawcze";
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $err) {
+            return [$err->getMessage()];
+        }
+    }
+    public function getInspections(): array {
+        try {
+            $db = Database::connect();
+            $sql = "SELECT * FROM PRACOWNIK_BUIRO p INNER JOIN STANOWISKO_INSPEKCYJNE s ON p.nr_pokoju = s.numer INNER JOIN STANOWISKO st ON s.numer = st.stanowisko_inspekcyjne";
             $stmt = $db->prepare($sql);
             $stmt->execute();
 
