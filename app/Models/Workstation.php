@@ -8,7 +8,9 @@ use \PDO;
 use \PDOException;
 
 class Workstation {
-    public function getRepair(string $name): array {
+    public function getRepair(string $name = ""): array {
+        if($name == "")
+            return [];
         try {
             $db = Database::connect();
             $sql = "SELECT * FROM STANOWISKO s INNER JOIN STANOWISKO_NAPRAWCZE sn ON s.stanowisko_naprawcze = sn.number and nazwa = :name";
@@ -21,7 +23,9 @@ class Workstation {
             return [$err->getMessage()];
         }
     }
-    public function getInspect(string $name): array {
+    public function getInspect(string $name = ""): array {
+        if($name == "")
+            return [];
         try {
             $db = Database::connect();
             $sql = "SELECT * FROM STANOWISKO s INNER JOIN STANOWISKO_INSPEKCYJNE si ON s.stanowisko_inspekcyjne = si.number and nazwa = :name";
