@@ -78,7 +78,7 @@ class Order {
             $stmt->bindParam(":startDate", $startDate, PDO::PARAM_STR);
             $stmt->bindParam(":endDate", $endDate, PDO::PARAM_STR);
             $stmt->bindParam(":description", $description, PDO::PARAM_STR);
-            $stmt->bindParam(":createDate", $createdDate, PDO::PARAM_STR);
+            $stmt->bindParam(":createdDate", $createdDate, PDO::PARAM_STR);
             $stmt->bindParam(":state", $state, PDO::PARAM_STR);
             $stmt->bindParam(":carId", $carId, PDO::PARAM_INT);
             $stmt->bindParam(":workerId", $workerId, PDO::PARAM_INT);
